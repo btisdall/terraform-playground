@@ -2,10 +2,22 @@ provider "aws" {
   region     = "us-east-1"
 }
 
+variable "nametag" {
+  default = "CodeBuild demo"
+}
+
 resource "aws_vpc" "main" {
   cidr_block       = "10.1.0.0/16"
 
   tags {
-    Name = "CodeBuild demo"
+    Name = "${var.nametag}"
+  }
+}
+
+resource "aws_internet_gateway" "igw" {
+  vpc_id = "${aws_vpc.main.id}"
+
+  tags {
+    Name = "${var.nametag}"
   }
 }
